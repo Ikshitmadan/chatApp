@@ -17,15 +17,25 @@ app.use(cookie_parser());
 
 
 const dotenv = require('dotenv');
+const path = require('path');
 dotenv.config()
 
 
 const baseUrl=process.env.BASE_URL;
 
-app.use(cors({
-  credentials:true,
-  origin:baseUrl
-}));
+app.use(cors());
+
+app.use(express.static(path.join(__dirname, './client/build')));
+
+
+app.get('*',(req,res)=>{
+  res.sendFile(path.join(__dirname, './client/dist/index.html'));
+
+})
+// app.use(cors({
+//   credentials:true,
+//   origin:baseUrl
+// }));
 
 app.use('/uploads', express.static('uploads'));
 
@@ -36,7 +46,9 @@ mongoose.connect(url).then(()=>{
     console.log(`connected`);
 }).catch(err=>{console.log(err);})
 
-const server=app.listen(5000);
+const port = process.env.PORT||5000;
+
+const server=app.listen(port);
 
 
 
