@@ -14,17 +14,20 @@ app.use(express.json())
 
 app.use(cookie_parser());
 
-app.use(cors({
-    credentials:true,
-    origin:'http://localhost:5173'
-}));
 
-app.use('/uploads', express.static('uploads'));
 
 const dotenv = require('dotenv');
 dotenv.config()
 
 
+const baseUrl=process.env.BASE_URL;
+
+app.use(cors({
+  credentials:true,
+  origin:baseUrl
+}));
+
+app.use('/uploads', express.static('uploads'));
 
 const url=process.env.MONGO_URL;
 console.log(url);
